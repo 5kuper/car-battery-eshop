@@ -15,5 +15,7 @@ namespace BattAPI.Domain.Entities
         public required StartPowerRating StartPowerRating { get; set; }
 
         public int Price { get; set; }
+
+        public Guid? ImageMetaId { get; set; }
     }
 }

@@ -6,6 +6,6 @@ namespace BattAPI.App.Services.Abstractions
 
     public interface IAuthService
     {
-        public string GenerateToken(User user);
+        string GenerateToken(User user);
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,12 @@ var connectionStr = builder.Configuration.GetConnectionString("PostgreSQL");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionStr));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IFileMetaRepository, FileMetaRepository>();
 builder.Services.AddScoped<IBatteryRepository, BatteryRepository>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IBatteryService, BatteryService>();
 
 var authOpt = builder.Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>()
     ?? throw new InvalidOperationException("AuthOptions isn't set.");
@@ -79,6 +83,11 @@ builder.Services.AddSwaggerGen(opt =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 20 * 1024 * 1024; // 20 MB
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -95,6 +104,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

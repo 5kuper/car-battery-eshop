@@ -8,6 +8,8 @@ namespace BattAPI.Infra.Data
     {
         public DbSet<User> Users => Set<User>();
 
+        public DbSet<FileMeta> FilesMeta => Set<FileMeta>();
+
         public DbSet<Battery> Batteries => Set<Battery>();
 
         public void Seed()
