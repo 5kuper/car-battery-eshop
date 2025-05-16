@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BatteriesAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class BatteryController(IBatteryRepository repo, IBatteryService service) : CrudControllerBase<Battery>(repo)
+    public class BatteriesController(IBatteryRepository repo, IBatteryService service) : CrudControllerBase<Battery>(repo)
     {
         [HttpGet("{id}/image")]
         public async Task<IActionResult> GetImage(Guid id)
