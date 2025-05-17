@@ -1,52 +1,31 @@
-﻿using BattAPI.App.Services.Abstractions;
-using BattAPI.Domain.Entities;
-using BattAPI.Domain.Repositories;
+﻿using BattAPI.App.Models;
+using BattAPI.App.Services.Abstractions;
+using BatteriesAPI.Controllers.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BatteriesAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class BatteriesController(IBatteryRepository repo, IBatteryService service) : CrudControllerBase<Battery>(repo)
+    public class BatteriesController(IBatteryService service)
+        : DtoCrudControllerBase<IBatteryService, InputBattery, OutputBattery, InputBattery>(service)
     {
-        [HttpGet("{id}/image")]
-        public async Task<IActionResult> GetImage(Guid id)
-        {
-            var imageMeta = await service.GetImageMetaAsync(id);
-            if (imageMeta != null)
-            {
-                return Ok($"{Request.Scheme}://{Request.Host}/{imageMeta.RelativePath}");
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpPut("{id}/image")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> UpdateImage(Guid id, IFormFile image)
+        public override Task<ActionResult<OutputBattery>> Create(InputBattery input)
         {
-            var imageMeta = await service.UpdateImageAsync(id, image);
-            return Ok($"{Request.Scheme}://{Request.Host}/{imageMeta.RelativePath}");
+            return base.Create(input);
         }
 
         [Authorize(Roles = "admin")]
-        public override Task<ActionResult<Battery>> Create(Battery entity)
+        public override Task<IActionResult> Update(Guid id, InputBattery patch)
         {
-            return base.Create(entity);
+            return base.Update(id, patch);
         }
 
         [Authorize(Roles = "admin")]
-        public override Task<IActionResult> Update(Guid id, Battery entity)
+        public override Task<IActionResult> Delete(Guid id)
         {
-            return base.Update(id, entity);
-        }
-
-        [Authorize(Roles = "admin")]
-        public override Task<IActionResult> Remove(Guid id)
-        {
-            return base.Remove(id);
+            return base.Delete(id);
         }
     }
 }

@@ -8,6 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http.Features;
+using BatteriesAPI;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,8 @@ var authOpt = builder.Configuration.GetSection(nameof(AuthOptions)).Get<AuthOpti
     ?? throw new InvalidOperationException("AuthOptions isn't set.");
 
 builder.Services.AddScoped((_) => authOpt);
+
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", opt =>
@@ -83,6 +87,8 @@ builder.Services.AddSwaggerGen(opt =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = 20 * 1024 * 1024; // 20 MB
@@ -101,7 +107,10 @@ if (app.Environment.IsDevelopment())
     app.UseCors("Localhost");
 
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(opt =>
+    {
+        opt.ConfigObject.PersistAuthorization = true;
+    });
 }
 
 app.UseStaticFiles();

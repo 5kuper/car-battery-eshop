@@ -62,7 +62,7 @@ namespace BattAPI.App.Services.Implementations
             {
                 FileName = file.FileName,
                 Kind = FileKind.Image,
-                RelativePath = $"/{BaseUploadsFolder}/{folder}/{uniqueFileName}",
+                RelativePath = $"{BaseUploadsFolder}/{folder}/{uniqueFileName}",
                 Length = file.Length,
                 ContentType = file.ContentType
             };

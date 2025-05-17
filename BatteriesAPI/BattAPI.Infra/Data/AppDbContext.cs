@@ -14,6 +14,8 @@ namespace BattAPI.Infra.Data
 
         public void Seed()
         {
+            Database.EnsureCreated();
+
             if (!Users.Any(u => u.Name == "admin"))
             {
                 Users.Add(new User
