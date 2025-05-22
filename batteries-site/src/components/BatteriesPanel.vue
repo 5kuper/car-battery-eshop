@@ -19,7 +19,7 @@ function mapBatteryToProduct(battery: Battery): Product {
   return {
     id: battery.id,
     name: `${battery.name} ${battery.capacity}Ah`,
-    imageUrl: 'https://images.unsplash.com/photo-1470093851219-69951fcbb533?q=80&w',
+    imageUrl: battery.imageUrl,
     tags: [`Пусковой ток ${battery.startPower} ${StartPowerRating[battery.startPowerRating]}`, `${battery.voltage}V`],
     price: battery.price,
   };

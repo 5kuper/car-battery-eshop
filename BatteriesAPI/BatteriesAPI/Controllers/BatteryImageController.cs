@@ -14,7 +14,7 @@ namespace BatteriesAPI.Controllers
             var imageMeta = await service.GetImageMetaAsync(id);
             if (imageMeta != null)
             {
-                return Ok($"{Request.Scheme}://{Request.Host}/{imageMeta.RelativePath}");
+                return Ok(new { url = $"{Request.Scheme}://{Request.Host}/{imageMeta.RelativePath}"});
             }
             else
             {
@@ -27,7 +27,7 @@ namespace BatteriesAPI.Controllers
         public async Task<IActionResult> UpdateImage(Guid id, IFormFile image)
         {
             var imageMeta = await service.UpdateImageAsync(id, image);
-            return Ok($"{Request.Scheme}://{Request.Host}/{imageMeta.RelativePath}");
+            return Ok(new { url = $"{Request.Scheme}://{Request.Host}/{imageMeta.RelativePath}" });
         }
 
         [HttpDelete("{id}/image")]

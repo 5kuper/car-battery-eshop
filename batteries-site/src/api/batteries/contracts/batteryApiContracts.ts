@@ -1,3 +1,10 @@
+export enum StartPowerRating {
+  SAE,
+  EN,
+  IEC,
+  DIN,
+}
+
 export interface Battery {
   id: string
   created: string
@@ -8,11 +15,14 @@ export interface Battery {
   startPower: number
   startPowerRating: StartPowerRating
   price: number
+  imageUrl?: string
 }
 
-export enum StartPowerRating {
-  SAE,
-  EN,
-  IEC,
-  DIN,
+export interface BatteryForm {
+  name: string
+  capacity: number
+  voltage: number
+  startPower: number
+  startPowerRating: StartPowerRating
+  price: number
 }

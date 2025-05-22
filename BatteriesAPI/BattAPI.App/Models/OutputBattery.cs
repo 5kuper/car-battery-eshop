@@ -6,6 +6,11 @@ namespace BattAPI.App.Models
     {
         public Guid Id { get; set; }
 
+        public DateTime Created { get; set; }
+
+        public DateTime Updated { get; set; }
+
+
         public required string Name { get; set; }
 
         public required int Capacity { get; set; }

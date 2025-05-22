@@ -9,7 +9,7 @@ namespace BatteriesAPI.Controllers.Utils
         protected TService Service { get; } = dtoService;
 
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<TOutput>>> GetAll()
+        public virtual async Task<ActionResult<IList<TOutput>>> GetAll()
         {
             var result = await Service.ListAsync();
             return Ok(result);
@@ -27,7 +27,7 @@ namespace BatteriesAPI.Controllers.Utils
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult<TOutput>> Create(TInput input)
+        public virtual async Task<IActionResult> Create(TInput input)
         {
             var id = await Service.CreateAsync(input);
             return Ok(new { id });

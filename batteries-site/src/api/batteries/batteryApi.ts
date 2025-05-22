@@ -1,5 +1,5 @@
 import httpClient from './httpClient'
-import type { Battery } from './contracts/batteryApiContracts'
+import type { Battery, BatteryForm } from './contracts/batteryApiContracts'
 
 export const getBatteries = async (): Promise<Battery[]> => {
   const response = await httpClient.get<Battery[]>('/api/Batteries')
@@ -11,13 +11,13 @@ export const getBatteryById = async (id: string): Promise<Battery> => {
   return response.data
 }
 
-export const createBattery = async (data: Partial<Battery>): Promise<Battery> => {
-  const response = await httpClient.post<Battery>('/api/Batteries', null, { params: data })
+export const createBattery = async (data: BatteryForm): Promise<{ id: string }> => {
+  const response = await httpClient.post<{ id: string }>('/api/Batteries', null, { params: data })
   return response.data
 }
 
-export const updateBattery = async (id: string, data: Partial<Battery>): Promise<void> => {
-  await httpClient.put(`/api/Batteries/${id}`, null, { params: { ...data, id } })
+export const updateBattery = async (id: string, data: Partial<BatteryForm>): Promise<void> => {
+  await httpClient.patch(`/api/Batteries/${id}`, null, { params: { ...data } })
 }
 
 export const deleteBattery = async (id: string): Promise<void> => {

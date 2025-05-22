@@ -7,7 +7,7 @@ namespace BatteriesAPI.Controllers.Utils
     public class EntityCrudControllerBase<T>(IRepository<T> repo) : ControllerBase where T : EntityBase
     {
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<T>>> GetAll()
+        public virtual async Task<ActionResult<IList<T>>> GetAll()
         {
             var entities = await repo.ListAsync();
             return Ok(entities);
@@ -25,7 +25,7 @@ namespace BatteriesAPI.Controllers.Utils
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult<T>> Create(T entity)
+        public virtual async Task<IActionResult> Create(T entity)
         {
             await repo.AddAsync(entity);
             await repo.SaveChangesAsync();

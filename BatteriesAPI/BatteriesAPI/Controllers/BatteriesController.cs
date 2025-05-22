@@ -11,7 +11,7 @@ namespace BatteriesAPI.Controllers
         : DtoCrudControllerBase<IBatteryService, InputBattery, OutputBattery, InputBattery>(service)
     {
         [Authorize(Roles = "admin")]
-        public override Task<ActionResult<OutputBattery>> Create(InputBattery input)
+        public override Task<IActionResult> Create(InputBattery input)
         {
             return base.Create(input);
         }

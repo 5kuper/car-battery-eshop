@@ -40,7 +40,8 @@ namespace BatteriesAPI.Controllers
             await userRepo.AddAsync(user);
             await userRepo.SaveChangesAsync();
 
-            return Ok();
+            var token = authService.GenerateToken(user);
+            return Ok(new { token });
         }
 
         private static string Hash(string input)
