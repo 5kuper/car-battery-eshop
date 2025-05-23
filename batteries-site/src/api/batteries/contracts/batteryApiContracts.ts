@@ -26,3 +26,14 @@ export interface BatteryForm {
   startPowerRating: StartPowerRating
   price: number
 }
+
+export function mapBatteryToForm(battery: Battery): BatteryForm {
+  return {
+    name: battery.name,
+    capacity: battery.capacity,
+    voltage: battery.voltage,
+    startPower: battery.startPower,
+    startPowerRating: battery.startPowerRating,
+    price: battery.price,
+  }
+}

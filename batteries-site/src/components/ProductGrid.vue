@@ -4,13 +4,19 @@ import ProductCard from './ProductCard.vue'
 import type Product from '@/models/product'
 
 defineProps<{
-  products: Product[]
+  products: Product[],
+  allowEditing: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'edit', id: string): void
 }>()
 </script>
 
 <template>
   <div class="product-grid">
-    <ProductCard v-for="product in products" :key="product.id" :product="product" />
+    <ProductCard v-for="product in products" :key="product.id" :product="product" :allow-editing="allowEditing"
+      @edit="(id) => emit('edit', id)" />
   </div>
 </template>
 

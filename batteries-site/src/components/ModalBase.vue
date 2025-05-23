@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -16,21 +16,23 @@ const emit = defineEmits<{
 const show = computed(() => route.query.modal === props.id)
 
 onMounted(() => {
-  window.addEventListener('keydown', (event: KeyboardEvent) => {
-    if (show.value && event.key === 'Escape') {
-      close();
-    }
+  const handler = (event: KeyboardEvent) => {
+    if (show.value && event.key === 'Escape') close()
+  }
+
+  window.addEventListener('keydown', handler)
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handler)
   })
 })
 
 const close = () => {
   router.replace({ query: { ...route.query, modal: undefined } })
-  emit('close')
 };
 </script>
 
 <template>
-  <transition name="modal-fade">
+  <transition name="modal-fade" @after-leave="emit('close')">
     <div v-if="show" class="modal-overlay" @click.self="close">
       <div class="modal-content">
         <button class="close-button" @click="close">×</button>

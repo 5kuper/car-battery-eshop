@@ -2,7 +2,12 @@
 import type Product from '@/models/product'
 
 defineProps<{
-  product: Product
+  product: Product,
+  allowEditing: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'edit', id: string): void
 }>()
 </script>
 
@@ -10,19 +15,22 @@ defineProps<{
   <div class="product-card">
     <img :src="product.imageUrl" :alt="product.name" class="product-image">
 
+    <button v-if="allowEditing" class="edit-button">
+      <span class="material-icons" @click="emit('edit', product.id)">edit</span>
+    </button>
+
     <div class="product-details">
       <h3 class="product-name">{{ product.name }}</h3>
-
       <div class="product-tags">
         <span v-for="tag in product.tags" :key="tag" class="product-tag">{{ tag }}</span>
       </div>
-
-      <p class="product-price">{{ product.price }} руб</p>
     </div>
   </div>
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 .product-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -70,5 +78,29 @@ defineProps<{
   font-size: 1.1rem;
   font-weight: bold;
   color: #333;
+}
+
+.edit-button {
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.edit-button:hover {
+  background-color: #7c4dff;
+}
+
+.material-icons {
+  font-size: 20px;
 }
 </style>
