@@ -1,4 +1,5 @@
-﻿using BattAPI.Domain.Entities;
+﻿using BattAPI.App.Models;
+using BattAPI.Domain.Entities;
 
 namespace BattAPI.App.Services.Abstractions
 {
@@ -6,6 +7,8 @@ namespace BattAPI.App.Services.Abstractions
 
     public interface IAuthService
     {
+        Task<UserInfo> GetUserInfoAsync(Guid userId);
+
         string GenerateToken(User user);
     }
 }

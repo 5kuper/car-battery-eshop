@@ -64,6 +64,8 @@ namespace BattAPI.App.Services.Implementations
 
             if (entity != null)
                 Repository.Remove(entity);
+
+            await Repository.SaveChangesAsync();
         }
 
         protected virtual Task<TOutput> MapToOutputAsync(TEntity entity)

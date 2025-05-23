@@ -1,7 +1,10 @@
-﻿using BattAPI.App.Services.Abstractions;
+﻿using BattAPI.App.Models;
+using BattAPI.App.Services.Abstractions;
 using BattAPI.Domain.Entities;
 using BattAPI.Domain.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -12,6 +15,17 @@ namespace BatteriesAPI.Controllers
     public class AuthController(IAuthService authService, IUserRepository userRepo)
         : ControllerBase
     {
+        [HttpGet("user-info"), Authorize]
+        public async Task<ActionResult<UserInfo>> GetUserInfo()
+        {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (idClaim == null) return Forbid();
+
+            var id = Guid.Parse(idClaim.Value);
+            var result = await authService.GetUserInfoAsync(id);
+            return Ok(result);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(string username, string password)
         {

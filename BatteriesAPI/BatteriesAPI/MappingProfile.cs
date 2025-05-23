@@ -8,8 +8,10 @@ namespace BatteriesAPI
     {
         public MappingProfile()
         {
-            CreateMap<Battery, OutputBattery>();
+            CreateMap<User, UserInfo>()
+                .ForMember(dest => dest.IsAdmin, opt => opt.MapFrom(src => src.Role == "admin"));
 
+            CreateMap<Battery, OutputBattery>();
             CreateMap<InputBattery, Battery>();
         }
     }
