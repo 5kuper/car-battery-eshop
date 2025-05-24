@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import JustButton from './common/JustButton.vue';
+
 import type Product from '@/models/product'
 
 defineProps<{
@@ -24,6 +26,8 @@ const emit = defineEmits<{
       <div class="product-tags">
         <span v-for="tag in product.tags" :key="tag" class="product-tag">{{ tag }}</span>
       </div>
+
+      <JustButton text="Купить" color="green" class="float-right" />
     </div>
   </div>
 </template>
@@ -32,6 +36,8 @@ const emit = defineEmits<{
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 .product-card {
+  display: flex;
+  flex-direction: column;
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;

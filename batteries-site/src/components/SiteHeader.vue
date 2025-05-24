@@ -18,7 +18,7 @@ function openAuth() {
         <img class="h-[35px] block" src="../assets/logo.svg" alt="Логотип" />
       </RouterLink>
 
-      <nav class="main-nav">
+      <!-- <nav class="main-nav">
         <ul>
           <li>
             <RouterLink to="/products">Товары</RouterLink>
@@ -30,13 +30,13 @@ function openAuth() {
             <RouterLink to="/reviews">Отзывы</RouterLink>
           </li>
         </ul>
-      </nav>
+      </nav> -->
 
       <div class="flex flex-row space-x-5 ml-auto">
-        <RouterLink to="/cart" class="icon-btn">
+        <!-- <RouterLink to="/cart" class="icon-btn">
           <span class="material-symbols-outlined"> shopping_cart </span>
           <span class="cart-count">{{ cartCount }}</span>
-        </RouterLink>
+        </RouterLink> -->
         <div class="icon-btn">
           <span @click="openAuth" @keydown.enter="openAuth" class="material-symbols-outlined cursor-pointer"
             tabindex="0" role="button">

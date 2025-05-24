@@ -2,6 +2,7 @@
 const colorVariants: { [key: string]: string } = {
   blue: 'bg-blue-600 hover:bg-blue-700',
   red: 'bg-red-600 hover:bg-red-700',
+  green: 'bg-green-600 hover:bg-green-700',
 }
 
 const props = withDefaults(
