@@ -8,7 +8,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 import type Product from '@/models/product'
 
-import { getBatteries } from '@/api/batteries/batteryApi'
+import { batteryApi } from '@/api/batteries/batteryApi'
 import { type Battery, StartPowerRating, mapBatteryToForm } from '@/api/batteries/contracts/batteryApiContracts'
 
 const router = useRouter()
@@ -19,7 +19,7 @@ const products = ref<Product[]>([])
 const isFetching = ref(false)
 
 const editingBatteryId = ref<string | undefined>(undefined)
-const editingBatteryForm = computed(() => {
+const editingBatteryData = computed(() => {
   if (!editingBatteryId.value) {
     return undefined
   }
@@ -27,14 +27,14 @@ const editingBatteryForm = computed(() => {
   if (!battery) {
     return undefined
   }
-  return mapBatteryToForm(battery)
+  return { form: mapBatteryToForm(battery), imageUrl: battery.imageUrl }
 })
 
 fetchBatteries()
 
 async function fetchBatteries() {
   isFetching.value = true;
-  batteries = await getBatteries()
+  batteries = await batteryApi.getBatteries()
   isFetching.value = false;
   products.value = batteries.map(mapBatteryToProduct)
 }
@@ -64,8 +64,8 @@ function onBatteryFormClosed() {
 </script>
 
 <template>
-  <BatteryFormModal :battery-id="editingBatteryId" :existing-data="editingBatteryForm" @close="onBatteryFormClosed"
-    @update="fetchBatteries" />
+  <BatteryFormModal :battery-id="editingBatteryId" :existing-data="editingBatteryData?.form"
+    :image-url="editingBatteryData?.imageUrl" @close="onBatteryFormClosed" @update="fetchBatteries" />
 
   <div class="flex gap-2 mr-5 mt-5 justify-end">
     <JustButton text="Обновить" :loading="isFetching" @click="fetchBatteries" />

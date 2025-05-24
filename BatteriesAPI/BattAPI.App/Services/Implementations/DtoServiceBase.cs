@@ -57,7 +57,7 @@ namespace BattAPI.App.Services.Implementations
             await Repository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Guid id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var entity = await Repository.GetAsync(id)
                 ?? throw new ArgumentException("Entity not found.", nameof(id));

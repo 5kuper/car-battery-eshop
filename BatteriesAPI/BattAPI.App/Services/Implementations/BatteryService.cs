@@ -55,6 +55,12 @@ namespace BattAPI.App.Services.Implementations
             await Repository.SaveChangesAsync();
         }
 
+        public override async Task DeleteAsync(Guid id)
+        {
+            await DeleteImageAsync(id);
+            await base.DeleteAsync(id);
+        }
+
         protected override async Task<OutputBattery> MapToOutputAsync(Battery entity)
         {
             var result = await base.MapToOutputAsync(entity);
