@@ -1,4 +1,4 @@
-﻿using BattAPI.App.Services.Abstractions;
+﻿using BattAPI.App.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BatteriesAPI.Controllers.Utils

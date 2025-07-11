@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
-using BattAPI.App.Models;
+using BattAPI.App.Common.Users;
+using BattAPI.App.Specific.Products.Models.Batteries;
+using BattAPI.App.Specific.Products.Models.JustProducts;
 using BattAPI.Domain.Entities;
+using BattAPI.Domain.Entities.Products;
 
 namespace BatteriesAPI
 {
@@ -11,8 +14,11 @@ namespace BatteriesAPI
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.IsAdmin, opt => opt.MapFrom(src => src.Role == "admin"));
 
-            CreateMap<Battery, OutputBattery>();
-            CreateMap<InputBattery, Battery>();
+            CreateMap<Product, JustProductDto>();
+            CreateMap<JustProductInput, Product>();
+
+            CreateMap<Battery, BatteryDto>();
+            CreateMap<BatteryInput, Battery>();
         }
     }
 }

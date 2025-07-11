@@ -1,4 +1,4 @@
-﻿namespace BattAPI.App.Models
+﻿namespace BattAPI.App.Common.Users
 {
     public class UserInfo
     {

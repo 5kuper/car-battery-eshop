@@ -1,10 +1,9 @@
-﻿using BattAPI.App.Services.Abstractions;
-using BattAPI.Domain.Entities;
+﻿using BattAPI.Domain.Entities;
 using BattAPI.Domain.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-namespace BattAPI.App.Services.Implementations
+namespace BattAPI.App.Common.Files
 {
     public class FileService(IWebHostEnvironment env, IFileMetaRepository fileMetaRepo) : IFileService
     {

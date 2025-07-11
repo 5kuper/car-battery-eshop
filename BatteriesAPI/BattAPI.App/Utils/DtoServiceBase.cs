@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using BattAPI.App.Services.Abstractions;
 using BattAPI.Domain.Entities;
 using BattAPI.Domain.Repositories;
 
-namespace BattAPI.App.Services.Implementations
+namespace BattAPI.App.Utils
 {
     public abstract class DtoServiceBase<TEntity, TRepository, TInput, TOutput, TPatch>(TRepository repo, IMapper mapper)
         : IDtoServiceBase<TInput, TOutput, TPatch>

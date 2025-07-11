@@ -1,7 +1,6 @@
-﻿using BattAPI.App.Models;
-using BattAPI.Domain.Entities;
+﻿using BattAPI.Domain.Entities;
 
-namespace BattAPI.App.Services.Abstractions
+namespace BattAPI.App.Common.Users
 {
     public record AuthOptions(string Secret);
 

@@ -1,5 +1,4 @@
-﻿using BattAPI.App.Models;
-using BattAPI.App.Services.Abstractions;
+﻿using BattAPI.App.Common.Users;
 using BattAPI.Domain.Entities;
 using BattAPI.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;

@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using BattAPI.App.Models;
-using BattAPI.App.Services.Abstractions;
 using BattAPI.Domain.Entities;
 using BattAPI.Domain.Repositories;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace BattAPI.App.Services.Implementations
+namespace BattAPI.App.Common.Users
 {
     public class AuthService(AuthOptions opt, IUserRepository userRepo, IMapper mapper) : IAuthService
     {

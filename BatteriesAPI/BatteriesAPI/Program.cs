@@ -1,5 +1,3 @@
-using BattAPI.App.Services.Implementations;
-using BattAPI.App.Services.Abstractions;
 using BattAPI.Domain.Repositories;
 using BattAPI.Infra.Data;
 using BattAPI.Infra.Data.Repositories;
@@ -9,7 +7,9 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http.Features;
 using BatteriesAPI;
-using Microsoft.Extensions.Options;
+using BattAPI.App.Common.Users;
+using BattAPI.App.Common.Files;
+using BattAPI.App.Specific.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,7 @@ builder.Services.AddScoped<IBatteryRepository, BatteryRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IBatteryService, BatteryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var authOpt = builder.Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>()
     ?? throw new InvalidOperationException("AuthOptions isn't set.");

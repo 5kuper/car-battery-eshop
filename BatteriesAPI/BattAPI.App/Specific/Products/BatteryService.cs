@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
-using BattAPI.App.Models;
-using BattAPI.App.Services.Abstractions;
+using BattAPI.App.Common.Files;
+using BattAPI.App.Specific.Products.Models.Batteries;
+using BattAPI.App.Utils;
 using BattAPI.Domain.Entities;
+using BattAPI.Domain.Entities.Products;
 using BattAPI.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
 
-namespace BattAPI.App.Services.Implementations
+namespace BattAPI.App.Specific.Products
 {
     public class BatteryService(IBatteryRepository repo, IMapper mapper, IFileService fileService, IHttpContextAccessor ctxAccessor)
-        : DtoServiceBase<Battery, IBatteryRepository, InputBattery, OutputBattery, InputBattery>(repo, mapper), IBatteryService
+        : DtoServiceBase<Battery, IBatteryRepository, BatteryInput, BatteryDto, BatteryPatch>(repo, mapper), IBatteryService
     {
         private const string ImageUploadFolder = "batteries";
 
@@ -61,7 +63,7 @@ namespace BattAPI.App.Services.Implementations
             await base.DeleteAsync(id);
         }
 
-        protected override async Task<OutputBattery> MapToOutputAsync(Battery entity)
+        protected override async Task<BatteryDto> MapToOutputAsync(Battery entity)
         {
             var result = await base.MapToOutputAsync(entity);
 
@@ -80,6 +82,6 @@ namespace BattAPI.App.Services.Implementations
             return result;
         }
 
-        protected override void Patch(Battery entity, InputBattery patch) => patch.Patch(entity);
+        protected override void Patch(Battery entity, BatteryPatch patch) => patch.Patch(entity);
     }
 }

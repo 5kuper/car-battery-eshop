@@ -1,7 +1,7 @@
 ﻿using BattAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
-namespace BattAPI.App.Services.Abstractions
+namespace BattAPI.App.Common.Files
 {
     public interface IFileService
     {

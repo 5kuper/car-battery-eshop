@@ -1,5 +1,5 @@
-﻿using BattAPI.App.Models;
-using BattAPI.App.Services.Abstractions;
+﻿using BattAPI.App.Specific.Products;
+using BattAPI.App.Specific.Products.Models.Batteries;
 using BatteriesAPI.Controllers.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,16 +8,16 @@ namespace BatteriesAPI.Controllers
 {
     [Route("api/[controller]")]
     public class BatteriesController(IBatteryService service)
-        : DtoCrudControllerBase<IBatteryService, InputBattery, OutputBattery, InputBattery>(service)
+        : DtoCrudControllerBase<IBatteryService, BatteryInput, BatteryDto, BatteryPatch>(service)
     {
         [Authorize(Roles = "admin")]
-        public override Task<IActionResult> Create(InputBattery input)
+        public override Task<IActionResult> Create(BatteryInput input)
         {
             return base.Create(input);
         }
 
         [Authorize(Roles = "admin")]
-        public override Task<IActionResult> Update(Guid id, InputBattery patch)
+        public override Task<IActionResult> Update(Guid id, BatteryPatch patch)
         {
             return base.Update(id, patch);
         }

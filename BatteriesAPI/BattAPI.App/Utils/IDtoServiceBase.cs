@@ -1,4 +1,4 @@
-﻿namespace BattAPI.App.Services.Abstractions
+﻿namespace BattAPI.App.Utils
 {
     public interface IDtoServiceBase<TInput, TOutput, TPatch>
     {
