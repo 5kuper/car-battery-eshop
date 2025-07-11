@@ -3,7 +3,7 @@ using BattAPI.Domain.Repositories;
 
 namespace BattAPI.Infra.Data.Repositories
 {
-    public class FileMetaRepository(AppDbContext context) : RepositoryBase<FileMeta>(context), IFileMetaRepository
+    public class FileMetaRepository(AppDbContext context) : Repository<FileMeta>(context), IFileMetaRepository
     {
     }
 }

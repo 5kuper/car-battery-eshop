@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BatteriesAPI.Controllers.Utils
 {
-    public class EntityCrudControllerBase<T>(IRepository<T> repo) : ControllerBase where T : EntityBase
+    public class EntityCrudControllerBase<T>(IRepository<T> repo) : ControllerBase where T : Entity
     {
         [HttpGet]
         public virtual async Task<ActionResult<IList<T>>> GetAll()

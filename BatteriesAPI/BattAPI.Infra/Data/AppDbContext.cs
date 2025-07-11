@@ -55,7 +55,7 @@ namespace BattAPI.Infra.Data
 
         private void SetTimestamps()
         {
-            foreach (var entry in ChangeTracker.Entries<EntityBase>())
+            foreach (var entry in ChangeTracker.Entries<Entity>())
             {
                 if (entry.State == EntityState.Added)
                 {

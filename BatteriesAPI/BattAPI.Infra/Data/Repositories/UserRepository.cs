@@ -3,7 +3,7 @@ using BattAPI.Domain.Repositories;
 
 namespace BattAPI.Infra.Data.Repositories
 {
-    public class UserRepository(AppDbContext context) : RepositoryBase<User>(context), IUserRepository
+    public class UserRepository(AppDbContext context) : Repository<User>(context), IUserRepository
     {
     }
 }

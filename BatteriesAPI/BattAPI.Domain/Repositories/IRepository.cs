@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace BattAPI.Domain.Repositories
 {
-    public interface IRepository<T> where T : EntityBase
+    public interface IRepository<T> where T : Entity
     {
         Task<IList<T>> ListAsync(Expression<Func<T, bool>>? predicate = null);
 

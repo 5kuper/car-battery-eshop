@@ -2,7 +2,7 @@
 {
     public enum FileKind { Image }
 
-    public class FileMeta : EntityBase
+    public class FileMeta : Entity
     {
         public required string FileName { get; set; }
 

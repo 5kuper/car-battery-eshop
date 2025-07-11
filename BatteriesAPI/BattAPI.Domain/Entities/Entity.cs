@@ -2,7 +2,7 @@
 
 namespace BattAPI.Domain.Entities
 {
-    public class EntityBase
+    public class Entity
     {
         [Key] public Guid Id { get; set; }
 

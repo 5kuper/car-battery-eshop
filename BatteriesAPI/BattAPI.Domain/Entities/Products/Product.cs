@@ -1,6 +1,6 @@
 ﻿namespace BattAPI.Domain.Entities.Products
 {
-    public class Product : EntityBase
+    public class Product : Entity
     {
         public required string Name { get; set; }
 

@@ -7,7 +7,7 @@ namespace BattAPI.App.Utils
     public abstract class DtoServiceBase<TEntity, TRepository, TInput, TOutput, TPatch>(TRepository repo, IMapper mapper)
         : IDtoServiceBase<TInput, TOutput, TPatch>
 
-        where TEntity : EntityBase
+        where TEntity : Entity
         where TRepository : IRepository<TEntity>
         where TInput : class
     {

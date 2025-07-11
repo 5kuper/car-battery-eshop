@@ -5,12 +5,12 @@ using System.Linq.Expressions;
 
 namespace BattAPI.Infra.Data.Repositories
 {
-    public class RepositoryBase<T> : IRepository<T> where T : EntityBase
+    public class Repository<T> : IRepository<T> where T : Entity
     {
         protected readonly DbContext _context;
         protected readonly DbSet<T> _set;
 
-        public RepositoryBase(AppDbContext context)
+        public Repository(AppDbContext context)
         {
             _context = context;
             _set = _context.Set<T>();
