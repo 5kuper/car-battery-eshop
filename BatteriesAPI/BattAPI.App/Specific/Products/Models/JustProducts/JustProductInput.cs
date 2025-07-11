@@ -12,8 +12,5 @@
         public int Price { get; set; }
 
         public int WarrantyMonths { get; set; }
-
-
-        public Guid? ImageMetaId { get; set; }
     }
 }

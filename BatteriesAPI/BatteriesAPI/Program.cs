@@ -1,6 +1,4 @@
-using BattAPI.Domain.Repositories;
 using BattAPI.Infra.Data;
-using BattAPI.Infra.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -8,22 +6,15 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http.Features;
 using BatteriesAPI;
 using BattAPI.App.Common.Users;
-using BattAPI.App.Common.Files;
-using BattAPI.App.Specific.Products;
+using BatteriesAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionStr = builder.Configuration.GetConnectionString("PostgreSQL");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionStr));
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IFileMetaRepository, FileMetaRepository>();
-builder.Services.AddScoped<IBatteryRepository, BatteryRepository>();
-
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<IBatteryService, BatteryService>();
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddCoreServices();
+builder.Services.AddRepositories();
 
 var authOpt = builder.Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>()
     ?? throw new InvalidOperationException("AuthOptions isn't set.");

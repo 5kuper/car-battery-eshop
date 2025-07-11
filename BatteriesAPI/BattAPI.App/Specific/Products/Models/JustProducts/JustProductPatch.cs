@@ -16,9 +16,6 @@ namespace BattAPI.App.Specific.Products.Models.JustProducts
         public int? WarrantyMonths { get; set; }
 
 
-        public Guid? ImageMetaId { get; set; }
-
-
         public void Patch(Product battery)
         {
             if (Name != null)
@@ -35,9 +32,6 @@ namespace BattAPI.App.Specific.Products.Models.JustProducts
 
             if (WarrantyMonths.HasValue)
                 battery.WarrantyMonths = WarrantyMonths.Value;
-
-            if (ImageMetaId.HasValue)
-                battery.ImageMetaId = ImageMetaId.Value;
         }
     }
 }

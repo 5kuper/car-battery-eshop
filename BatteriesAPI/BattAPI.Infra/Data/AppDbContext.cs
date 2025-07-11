@@ -1,4 +1,5 @@
 ﻿using BattAPI.Domain.Entities;
+using BattAPI.Domain.Entities.Files;
 using BattAPI.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -12,11 +13,18 @@ namespace BattAPI.Infra.Data
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Battery> Batteries => Set<Battery>();
 
-        public DbSet<FileMeta> FilesMeta => Set<FileMeta>();
+        public DbSet<ProductImageMeta> ProductImages => Set<ProductImageMeta>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>().UseTptMappingStrategy();
+            modelBuilder.Entity<FileMeta>().UseTphMappingStrategy();
+
+            modelBuilder.Entity<Product>().UseTptMappingStrategy()
+                .HasOne(p => p.ImageMeta)
+                .WithOne(img => img.Product)
+                .HasForeignKey<ProductImageMeta>(img => img.ProductId);
+
+            modelBuilder.Entity<Battery>().OwnsOne(b => b.Specs);
         }
 
         public void Seed()

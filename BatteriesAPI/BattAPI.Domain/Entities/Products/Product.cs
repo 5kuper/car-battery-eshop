@@ -1,4 +1,6 @@
-﻿namespace BattAPI.Domain.Entities.Products
+﻿using BattAPI.Domain.Entities.Files;
+
+namespace BattAPI.Domain.Entities.Products
 {
     public class Product : Entity
     {
@@ -14,6 +16,6 @@
         public int WarrantyMonths { get; set; }
 
 
-        public Guid? ImageMetaId { get; set; }
+        public ProductImageMeta? ImageMeta { get; set; }
     }
 }

@@ -2,46 +2,44 @@
 using BattAPI.App.Common.Files;
 using BattAPI.App.Specific.Products.Models.Batteries;
 using BattAPI.App.Utils;
-using BattAPI.Domain.Entities;
+using BattAPI.Domain.Entities.Files;
 using BattAPI.Domain.Entities.Products;
 using BattAPI.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
 
 namespace BattAPI.App.Specific.Products
 {
-    public class BatteryService(IBatteryRepository repo, IMapper mapper, IFileService fileService, IHttpContextAccessor ctxAccessor)
-        : DtoServiceBase<Battery, IBatteryRepository, BatteryInput, BatteryDto, BatteryPatch>(repo, mapper), IBatteryService
+    public class BatteryService : DtoServiceBase<Battery, IBatteryRepository, BatteryInput, BatteryDto, BatteryPatch>, IBatteryService
     {
         private const string ImageUploadFolder = "batteries";
 
-        private readonly IFileService _fileService = fileService;
-        private readonly IHttpContextAccessor _ctxAccessor = ctxAccessor;
+        private readonly IFileService<ProductImageMeta> _fileService;
+        private readonly IHttpContextAccessor _ctxAccessor;
 
-        public async Task<FileMeta?> GetImageMetaAsync(Guid batteryId)
+        public BatteryService(IBatteryRepository repo, IMapper mapper,
+            IFileService<ProductImageMeta> fileService, IHttpContextAccessor ctxAccessor) : base(repo, mapper)
         {
-            var battery = await Repository.GetAsync(batteryId)
-                ?? throw new ArgumentException("Battery not found.", nameof(batteryId));
-
-            if (battery.ImageMetaId == null)
-                return null;
-
-            return await _fileService.GetFileMetaAsync(battery.ImageMetaId.Value);
+            _fileService = fileService;
+            _ctxAccessor = ctxAccessor;
         }
 
-        public async Task<FileMeta> UpdateImageAsync(Guid batteryId, IFormFile image)
+        public async Task<ProductImageMeta?> GetImageMetaAsync(Guid batteryId)
         {
             var battery = await Repository.GetAsync(batteryId)
                 ?? throw new ArgumentException("Battery not found.", nameof(batteryId));
 
-            var imageMeta = await _fileService.SaveImageFileAsync(image, ImageUploadFolder);
+            return battery.ImageMeta;
+        }
 
-            if (battery.ImageMetaId != null)
-                await _fileService.DeleteFileAsync(battery.ImageMetaId.Value);
+        public async Task<ProductImageMeta> UpdateImageAsync(Guid batteryId, IFormFile image)
+        {
+            var battery = await Repository.GetAsync(batteryId)
+                ?? throw new ArgumentException("Battery not found.", nameof(batteryId));
 
-            battery.ImageMetaId = imageMeta.Id;
-            await Repository.SaveChangesAsync();
+            if (battery.ImageMeta != null)
+                await _fileService.DeleteFileAsync(battery.ImageMeta.Id);
 
-            return imageMeta;
+            return await _fileService.SaveImageFileAsync(image, ImageUploadFolder, meta => meta.ProductId = batteryId);
         }
 
         public async Task DeleteImageAsync(Guid batteryId)
@@ -49,12 +47,8 @@ namespace BattAPI.App.Specific.Products
             var battery = await Repository.GetAsync(batteryId)
                 ?? throw new ArgumentException("Battery not found.", nameof(batteryId));
 
-            if (battery.ImageMetaId == null)
-                throw new InvalidOperationException("Battery has not image.");
-
-            await _fileService.DeleteFileAsync(battery.ImageMetaId.Value);
-            battery.ImageMetaId = null;
-            await Repository.SaveChangesAsync();
+            if (battery.ImageMeta != null)
+                await _fileService.DeleteFileAsync(battery.ImageMeta.Id);
         }
 
         public override async Task DeleteAsync(Guid id)
@@ -67,16 +61,10 @@ namespace BattAPI.App.Specific.Products
         {
             var result = await base.MapToOutputAsync(entity);
 
-            if (entity.ImageMetaId != null)
+            if (entity.ImageMeta != null && _ctxAccessor.HttpContext != null)
             {
-                var imageMeta = await _fileService.GetFileMetaAsync(entity.ImageMetaId.Value)
-                    ?? throw new InvalidOperationException("Image meta not found.");
-
-                if (_ctxAccessor.HttpContext != null)
-                {
-                    var request = _ctxAccessor.HttpContext.Request;
-                    result.ImageUrl = $"{request.Scheme}://{request.Host}/{imageMeta.RelativePath}";
-                }
+                var request = _ctxAccessor.HttpContext.Request;
+                result.ImageUrl = $"{request.Scheme}://{request.Host}/{entity.ImageMeta.RelativePath}";
             }
 
             return result;

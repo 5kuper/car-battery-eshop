@@ -1,14 +1,15 @@
-﻿using BattAPI.Domain.Entities;
+﻿using BattAPI.Domain.Entities.Files;
 using Microsoft.AspNetCore.Http;
 
 namespace BattAPI.App.Common.Files
 {
-    public interface IFileService
+    public interface IFileService<TMeta> where TMeta : FileMeta
     {
-        Task<FileMeta?> GetFileMetaAsync(Guid id);
-
-        Task<FileMeta> SaveImageFileAsync(IFormFile file, string folder);
+        Task<TMeta?> GetFileMetaAsync(Guid id);
 
         Task DeleteFileAsync(Guid metaId);
+
+
+        Task<TMeta> SaveImageFileAsync(IFormFile file, string folder, Action<TMeta>? configureMeta = null);
     }
 }

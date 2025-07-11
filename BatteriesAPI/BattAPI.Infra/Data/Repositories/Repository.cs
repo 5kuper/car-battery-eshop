@@ -5,57 +5,69 @@ using System.Linq.Expressions;
 
 namespace BattAPI.Infra.Data.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : Entity
+    public class Repository<T>(DbContext context) : IRepository<T> where T : Entity
     {
-        protected readonly DbContext _context;
-        protected readonly DbSet<T> _set;
+        protected DbContext Context { get; } = context;
 
-        public Repository(AppDbContext context)
-        {
-            _context = context;
-            _set = _context.Set<T>();
-        }
+        protected DbSet<T> Set { get; } = context.Set<T>();
 
-        public async Task<IList<T>> ListAsync(Expression<Func<T, bool>>? predicate)
+        protected virtual Expression<Func<T, object?>>[] Includes { get; } = [];
+
+        protected IQueryable<T> IncludingQuery
         {
-            if (predicate != null)
+            get
             {
-                return await _set.Where(predicate).ToListAsync();
+                IQueryable<T> query = Set;
+                foreach (var include in Includes)
+                {
+                    query = query.Include(include);
+                }
+                return query;
             }
-            else
-            {
-                return await _set.ToListAsync();
-            }
-        }
-
-        public async Task<T?> GetAsync(Guid id)
-        {
-            return await _set.FindAsync(id);
-        }
-
-        public async Task<T?> GetAsync(Expression<Func<T, bool>> predicate)
-        {
-            return await _set.FirstOrDefaultAsync(predicate);
         }
 
         public async Task AddAsync(T entity)
         {
-            await _set.AddAsync(entity);
+            if (entity.Id == Guid.Empty) entity.Id = Guid.NewGuid();
+            await Set.AddAsync(entity);
         }
 
-        public void Update(T entity)
+        public void Update(T entity) => Set.Update(entity);
+
+        public void Remove(T entity) => Set.Remove(entity);
+
+        public async Task SaveChangesAsync() => await Context.SaveChangesAsync();
+
+        public async Task<T?> GetAsync(Guid id)
         {
-            _set.Update(entity);
+            return await IncludingQuery.FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public void Remove(T entity)
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> predicate)
         {
-            _set.Remove(entity);
+            return await IncludingQuery.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task SaveChangesAsync()
+        public async Task<IList<T>> ListAsync(Expression<Func<T, bool>>? predicate = null, int? skip = null, int? take = null)
         {
-            await _context.SaveChangesAsync();
+            var query = predicate != null
+                ? IncludingQuery.Where(predicate)
+                : IncludingQuery;
+
+            query = query.OrderBy(e => e.Id);
+
+            if (skip != null)
+                query = query.Skip(skip.Value);
+
+            if (take != null)
+                query = query.Take(take.Value);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null)
+        {
+            return predicate != null ? await Set.CountAsync(predicate) : await Set.CountAsync();
         }
     }
 }
