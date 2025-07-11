@@ -1,4 +1,5 @@
 ﻿using BattAPI.Domain.Entities;
+using BattAPI.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 
@@ -8,9 +9,15 @@ namespace BattAPI.Infra.Data
     {
         public DbSet<User> Users => Set<User>();
 
+        public DbSet<Product> Products => Set<Product>();
+        public DbSet<Battery> Batteries => Set<Battery>();
+
         public DbSet<FileMeta> FilesMeta => Set<FileMeta>();
 
-        public DbSet<Battery> Batteries => Set<Battery>();
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>().UseTptMappingStrategy();
+        }
 
         public void Seed()
         {

@@ -1,4 +1,4 @@
-﻿using BattAPI.Domain.Entities;
+﻿using BattAPI.Domain.Entities.Products;
 
 namespace BattAPI.Domain.Repositories
 {
