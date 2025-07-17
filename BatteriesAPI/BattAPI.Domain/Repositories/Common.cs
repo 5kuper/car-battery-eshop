@@ -9,6 +9,9 @@ namespace BattAPI.Domain.Repositories
     public interface IProductRepository : IRepository<Product>;
     public interface IBatteryRepository : IRepository<Battery>;
 
+    public interface INoteRepository : IRepository<Note>;
+
     public interface IFileMetaRepository : IRepository<FileMeta>;
     public interface IProductImageRepository : IRepository<ProductImageMeta>;
+    public interface INoteAttachmentRepository : IRepository<NoteAttachmentMeta>;
 }

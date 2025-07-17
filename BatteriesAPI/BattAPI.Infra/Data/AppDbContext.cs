@@ -13,7 +13,10 @@ namespace BattAPI.Infra.Data
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Battery> Batteries => Set<Battery>();
 
+        public DbSet<Note> Notes => Set<Note>();
+
         public DbSet<ProductImageMeta> ProductImages => Set<ProductImageMeta>();
+        public DbSet<NoteAttachmentMeta> NoteAttachments => Set<NoteAttachmentMeta>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +28,11 @@ namespace BattAPI.Infra.Data
                 .HasForeignKey<ProductImageMeta>(img => img.ProductId);
 
             modelBuilder.Entity<Battery>().OwnsOne(b => b.Specs);
+
+            modelBuilder.Entity<Note>()
+                .HasMany(n => n.Attachments)
+                .WithOne(a => a.Note)
+                .HasForeignKey(a => a.NoteId);
         }
 
         public void Seed()

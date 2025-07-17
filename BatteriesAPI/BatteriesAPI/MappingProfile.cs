@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BattAPI.App.Common.Users;
+using BattAPI.App.Specific.Notes.Models;
 using BattAPI.App.Specific.Products.Models.Batteries;
 using BattAPI.App.Specific.Products.Models.JustProducts;
 using BattAPI.Domain.Entities;
@@ -19,6 +20,9 @@ namespace BatteriesAPI
 
             CreateMap<Battery, BatteryDto>();
             CreateMap<BatteryInput, Battery>();
+
+            CreateMap<Note, NoteDto>();
+            CreateMap<NoteInput, Note>();
         }
     }
 }

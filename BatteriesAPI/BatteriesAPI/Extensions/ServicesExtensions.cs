@@ -1,9 +1,11 @@
 ﻿using BattAPI.App.Common.Files;
 using BattAPI.App.Common.Users;
+using BattAPI.App.Specific.Notes;
 using BattAPI.App.Specific.Products;
 using BattAPI.Domain.Entities.Files;
 using BattAPI.Domain.Repositories;
 using BattAPI.Infra.Data.Repositories;
+using BattAPI.Infra.Data.Repositories.Files;
 
 namespace BatteriesAPI.Extensions
 {
@@ -16,8 +18,11 @@ namespace BatteriesAPI.Extensions
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IBatteryService, BatteryService>();
 
+            services.AddScoped<INoteService, NoteService>();
+
             services.AddScoped<IFileService<FileMeta>, FileService<FileMeta>>();
             services.AddScoped<IFileService<ProductImageMeta>, FileService<ProductImageMeta>>();
+            services.AddScoped<IFileService<NoteAttachmentMeta>, FileService<NoteAttachmentMeta>>();
 
             return services;
         }
@@ -34,6 +39,8 @@ namespace BatteriesAPI.Extensions
 
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddScoped<IRepository<ProductImageMeta>, ProductImageRepository>();
+            services.AddScoped<INoteAttachmentRepository, NoteAttachmentRepository>();
+            services.AddScoped<IRepository<NoteAttachmentMeta>, NoteAttachmentRepository>();
 
             return services;
         }
