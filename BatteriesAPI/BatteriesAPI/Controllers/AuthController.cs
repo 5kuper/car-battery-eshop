@@ -9,8 +9,7 @@ using System.Text;
 
 namespace BatteriesAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    [ApiController, Route("api/[controller]")]
     public class AuthController(IAuthService authService, IUserRepository userRepo)
         : ControllerBase
     {

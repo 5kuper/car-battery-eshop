@@ -4,17 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BatteriesAPI.Controllers
 {
-    [Route("api/Battery")]
-    [ApiController]
-    public class BatteryImageController(IBatteryService service) : ControllerBase
+    [ApiController, Route("api/products")]
+    public class GeneralProductsController(IGeneralProductService service) : ControllerBase
     {
+        [HttpGet]
+        public async Task<ActionResult<IList<GeneralProductDto>>> GetAll()
+        {
+            var result = await service.ListAllKindsAsync();
+            return Ok(result);
+        }
+
         [HttpGet("{id}/image")]
         public async Task<IActionResult> GetImage(Guid id)
         {
             var imageMeta = await service.GetImageMetaAsync(id);
             if (imageMeta != null)
             {
-                return Ok(new { url = $"{Request.Scheme}://{Request.Host}/{imageMeta.RelativePath}"});
+                return Ok(new { url = $"{Request.Scheme}://{Request.Host}/{imageMeta.RelativePath}" });
             }
             else
             {

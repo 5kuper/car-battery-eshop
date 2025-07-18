@@ -1,4 +1,4 @@
-﻿namespace BattAPI.App.Specific.Products.Models.JustProducts
+﻿namespace BattAPI.App.Specific.Products.JustProducts.Models
 {
     public class JustProductDto
     {

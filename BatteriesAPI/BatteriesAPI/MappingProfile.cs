@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BattAPI.App.Common.Users;
 using BattAPI.App.Specific.Notes.Models;
-using BattAPI.App.Specific.Products.Models.Batteries;
-using BattAPI.App.Specific.Products.Models.JustProducts;
+using BattAPI.App.Specific.Products.Batteries.Models;
+using BattAPI.App.Specific.Products.JustProducts.Models;
 using BattAPI.Domain.Entities;
 using BattAPI.Domain.Entities.Products;
 

@@ -1,9 +1,9 @@
-﻿using BattAPI.App.Specific.Products.Models.JustProducts;
+﻿using BattAPI.App.Specific.Products.JustProducts.Models;
 using BattAPI.Domain.ValueObj;
 
-namespace BattAPI.App.Specific.Products.Models.Batteries
+namespace BattAPI.App.Specific.Products.Batteries.Models
 {
-    public class BatteryInput : JustProductInput
+    public class BatteryDto : JustProductDto
     {
         public string? Model { get; set; }
 

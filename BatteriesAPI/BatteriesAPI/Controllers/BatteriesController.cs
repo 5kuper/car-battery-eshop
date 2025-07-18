@@ -1,12 +1,12 @@
-﻿using BattAPI.App.Specific.Products;
-using BattAPI.App.Specific.Products.Models.Batteries;
+﻿using BattAPI.App.Specific.Products.Batteries;
+using BattAPI.App.Specific.Products.Batteries.Models;
 using BatteriesAPI.Controllers.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BatteriesAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiController, Route("api/[controller]")]
     public class BatteriesController(IBatteryService service)
         : DtoCrudControllerBase<IBatteryService, BatteryInput, BatteryDto, BatteryPatch>(service)
     {

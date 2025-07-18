@@ -8,6 +8,8 @@ namespace BattAPI.Infra.Data
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
+        public const string DiscriminatorProperty = "Discriminator";
+
         public DbSet<User> Users => Set<User>();
 
         public DbSet<Product> Products => Set<Product>();
@@ -23,6 +25,10 @@ namespace BattAPI.Infra.Data
             modelBuilder.Entity<FileMeta>().UseTphMappingStrategy();
 
             modelBuilder.Entity<Product>().UseTptMappingStrategy()
+                .Property<string>(DiscriminatorProperty)
+                .IsRequired();
+
+            modelBuilder.Entity<Product>()
                 .HasOne(p => p.ImageMeta)
                 .WithOne(img => img.Product)
                 .HasForeignKey<ProductImageMeta>(img => img.ProductId);
@@ -60,12 +66,14 @@ namespace BattAPI.Infra.Data
         public override int SaveChanges()
         {
             SetTimestamps();
+            SetDiscriminators();
             return base.SaveChanges();
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             SetTimestamps();
+            SetDiscriminators();
             return await base.SaveChangesAsync(cancellationToken);
         }
 
@@ -82,6 +90,15 @@ namespace BattAPI.Infra.Data
                 {
                     entry.Entity.Updated = DateTime.UtcNow;
                 }
+            }
+        }
+
+        private void SetDiscriminators()
+        {
+            foreach (var entry in ChangeTracker.Entries<Product>())
+            {
+                if (entry.State == EntityState.Added)
+                    entry.Property<string>(DiscriminatorProperty).CurrentValue = entry.Entity.GetType().Name;
             }
         }
     }

@@ -5,10 +5,7 @@ using BattAPI.Domain.Entities.Products;
 namespace BattAPI.Domain.Repositories
 {
     public interface IUserRepository : IRepository<User>;
-
-    public interface IProductRepository : IRepository<Product>;
     public interface IBatteryRepository : IRepository<Battery>;
-
     public interface INoteRepository : IRepository<Note>;
 
     public interface IFileMetaRepository : IRepository<FileMeta>;
