@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.Features;
 using BatteriesAPI;
 using BattAPI.App.Common.Users;
 using BatteriesAPI.Extensions;
+using BatteriesAPI.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,9 +77,12 @@ builder.Services.AddSwaggerGen(opt =>
     });
 });
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers(opt =>
+{
+    opt.Filters.Add<UnificationFilter>();
+});
 
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.Configure<FormOptions>(options =>
