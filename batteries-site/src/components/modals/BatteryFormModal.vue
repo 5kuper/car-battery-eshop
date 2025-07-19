@@ -8,9 +8,9 @@ import JustButton from '@/components/common/JustButton.vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { batteryApi } from '@/api/batteries/batteryApi'
-import { batteryImageApi } from '@/api/batteries/batteryImageApi'
-import { type BatteryForm, StartPowerRating } from '@/api/batteries/contracts/batteryApiContracts'
+import { batteryRequests } from '@/api/batteries/requests/products/batteryRequests'
+import { generalProductsRequests } from '@/api/batteries/requests/products/generalProductsRequests'
+import { type BatteryForm, StartPowerRating } from '@/api/batteries/models/batteryModels'
 
 const route = useRoute()
 const router = useRouter()
@@ -36,11 +36,19 @@ watch(
 
 const form = ref<BatteryForm>({
   name: '',
-  capacity: 0,
-  voltage: 12,
-  startPower: 0,
-  startPowerRating: StartPowerRating.EN,
+  country: undefined,
+  inStock: false,
   price: 0,
+  warrantyMonths: 0,
+
+  model: undefined,
+  specs: {
+    voltage: 12,
+    capacity: 0,
+    startPower: 0,
+    startPowerRating: StartPowerRating.EN
+  },
+  tags: []
 })
 
 const imageFile = ref<File | null>(null)
@@ -58,14 +66,14 @@ async function submit() {
     let id = props.batteryId
 
     if (id) {
-      await batteryApi.updateBattery(id, form.value)
+      await batteryRequests.updateBattery(id, form.value)
     } else {
-      const result = await batteryApi.createBattery(form.value)
-      id = result.id
+      const result = await batteryRequests.createBattery(form.value)
+      id = result.data.id
     }
 
     if (imageFile.value) {
-      await batteryImageApi.updateImage(id, imageFile.value)
+      await generalProductsRequests.updateImage(id, imageFile.value)
     }
 
     close(true)
@@ -77,7 +85,7 @@ async function submit() {
 }
 
 async function deleteBtn() {
-  await batteryApi.deleteBattery(props.batteryId!)
+  await batteryRequests.deleteBattery(props.batteryId!)
   close(true)
 }
 
@@ -91,11 +99,19 @@ function close(updated: boolean) {
 function handleClosing() {
   form.value = {
     name: '',
-    capacity: 0,
-    voltage: 12,
-    startPower: 0,
-    startPowerRating: StartPowerRating.EN,
+    country: undefined,
+    inStock: false,
     price: 0,
+    warrantyMonths: 0,
+
+    model: undefined,
+    specs: {
+      voltage: 12,
+      capacity: 0,
+      startPower: 0,
+      startPowerRating: StartPowerRating.EN
+    },
+    tags: []
   }
   imageFile.value = null
   emit('close')
@@ -110,10 +126,10 @@ function handleClosing() {
       <JustInput v-model="form.name" id="battery-form-name" label="Название" />
       <div class="flex space-x-3">
         <div class="space-y-2">
-          <JustInput v-model="form.capacity" id="battery-form-capacity" label="Ёмкость" type="number" />
-          <JustInput v-model="form.voltage" id="battery-form-voltage" label="Напряжение" type="number" />
-          <JustInput v-model="form.startPower" id="battery-form-start-power" label="Пусковой ток" type="number" />
-          <JustSelect v-model="form.startPowerRating" id="battery-from-start-power-rating"
+          <JustInput v-model="form.specs.capacity" id="battery-form-capacity" label="Ёмкость" type="number" />
+          <JustInput v-model="form.specs.voltage" id="battery-form-voltage" label="Напряжение" type="number" />
+          <JustInput v-model="form.specs.startPower" id="battery-form-start-power" label="Пусковой ток" type="number" />
+          <JustSelect v-model="form.specs.startPowerRating" id="battery-from-start-power-rating"
             label="Стандарт пускового тока" :options="[
               { value: StartPowerRating.SAE, label: 'SAE' },
               { value: StartPowerRating.EN, label: 'EN' },

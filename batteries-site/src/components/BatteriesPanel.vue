@@ -8,8 +8,8 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 import type Product from '@/models/product'
 
-import { batteryApi } from '@/api/batteries/batteryApi'
-import { type Battery, StartPowerRating, mapBatteryToForm } from '@/api/batteries/contracts/batteryApiContracts'
+import { batteryRequests } from '@/api/batteries/requests/products/batteryRequests'
+import { type Battery, StartPowerRating, mapBatteryToForm } from '@/api/batteries/models/batteryModels'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -34,7 +34,10 @@ fetchBatteries()
 
 async function fetchBatteries() {
   isFetching.value = true;
-  batteries = await batteryApi.getBatteries()
+
+  const battResp = await batteryRequests.getBatteries()
+  batteries = battResp.data
+
   isFetching.value = false;
   products.value = batteries.map(mapBatteryToProduct)
 }
@@ -42,9 +45,9 @@ async function fetchBatteries() {
 function mapBatteryToProduct(battery: Battery): Product {
   return {
     id: battery.id,
-    name: `${battery.name} ${battery.capacity}Ah`,
+    name: `${battery.name} ${battery.specs.capacity}Ah`,
     imageUrl: battery.imageUrl,
-    tags: [`Пусковой ток ${battery.startPower} ${StartPowerRating[battery.startPowerRating]}`, `${battery.voltage}V`],
+    tags: [`Пусковой ток ${battery.specs.startPower} ${StartPowerRating[battery.specs.startPowerRating]}`, `${battery.specs.voltage}V`],
     price: battery.price,
   };
 }

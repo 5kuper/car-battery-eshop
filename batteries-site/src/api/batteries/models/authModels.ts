@@ -4,16 +4,16 @@ export interface UserInfo {
   isAdmin: boolean
 }
 
-export interface LoginRequest {
+export interface LoginRequestData {
   username: string
   password: string
 }
 
-export interface RegisterRequest {
+export interface RegisterRequestData {
   username: string
   password: string
 }
 
-export interface AuthResponse {
+export interface AuthResponseData {
   token: string
 }
