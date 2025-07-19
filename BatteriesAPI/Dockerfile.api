@@ -5,10 +5,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["BatteriesAPI/BatteriesAPI.csproj", "."]
-RUN dotnet restore "./BatteriesAPI.csproj"
+COPY ["BatteriesAPI.sln", "."]
+COPY ["BatteriesAPI/BatteriesAPI.csproj", "BatteriesAPI/"]
+COPY ["BattAPI.App/BattAPI.App.csproj", "BattAPI.App/"]
+COPY ["BattAPI.Domain/BattAPI.Domain.csproj", "BattAPI.Domain/"]
+COPY ["BattAPI.Infra/BattAPI.Infra.csproj", "BattAPI.Infra/"]
+RUN dotnet restore "BatteriesAPI.sln"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/BatteriesAPI"
 RUN dotnet build "BatteriesAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
