@@ -38,15 +38,17 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization();
 
+var corsOrigins = builder.Configuration["CorsOrigins"]
+    ?? throw new InvalidOperationException("CorsOrigins isn't set.");
+
 builder.Services.AddCors(opt =>
 {
-    opt.AddPolicy("Localhost", policy =>
+    opt.AddPolicy("CorsPolicy", policy =>
     {
-        policy.SetIsOriginAllowed(origin =>
-            new Uri(origin).Host == "localhost")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.WithOrigins(corsOrigins.Split(';'))
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
