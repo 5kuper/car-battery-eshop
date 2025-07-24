@@ -102,14 +102,14 @@ using (var scope = app.Services.CreateScope())
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseCors("Localhost");
-
     app.UseSwagger();
     app.UseSwaggerUI(opt =>
     {
         opt.ConfigObject.PersistAuthorization = true;
     });
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseStaticFiles();
 app.UseHttpsRedirection();
