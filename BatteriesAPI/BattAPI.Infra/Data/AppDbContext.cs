@@ -2,7 +2,6 @@
 using BattAPI.Domain.Entities.Files;
 using BattAPI.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace BattAPI.Infra.Data
 {
@@ -39,28 +38,6 @@ namespace BattAPI.Infra.Data
                 .HasMany(n => n.Attachments)
                 .WithOne(a => a.Note)
                 .HasForeignKey(a => a.NoteId);
-        }
-
-        public void Seed()
-        {
-            Database.EnsureCreated();
-
-            if (!Users.Any(u => u.Name == "admin"))
-            {
-                Users.Add(new User
-                {
-                    Name = "admin",
-                    PasswordHash = Hash("admin"),
-                    Role = "admin"
-                });
-                SaveChanges();
-            }
-
-            static string Hash(string input)
-            {
-                var bytes = SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(input));
-                return Convert.ToBase64String(bytes);
-            }
         }
 
         public override int SaveChanges()

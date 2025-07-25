@@ -96,8 +96,11 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Seed();
+    var dbCtx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbCtx.Database.EnsureCreated();
+
+    var auth = scope.ServiceProvider.GetRequiredService<IAuthService>();
+    auth.EnsureAdminRegisteredAsync().Wait();
 }
 
 if (app.Environment.IsDevelopment())
