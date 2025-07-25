@@ -1,6 +1,17 @@
 version: "3.8"
 
 services:
+  site:
+    build:
+      context: ./batteries-site
+      dockerfile: Dockerfile.site
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    networks:
+      - app-network
+  
   api:
     build:
       context: ./BatteriesAPI
@@ -12,17 +23,6 @@ services:
       - ConnectionStrings__PostgreSQL=${API_CONNECTION_STRING}
     depends_on:
       - db
-    networks:
-      - app-network
-
-  site:
-    build:
-      context: ./batteries-site
-      dockerfile: Dockerfile.site
-    ports:
-      - "8080:80"
-    depends_on:
-      - api
     networks:
       - app-network
 
