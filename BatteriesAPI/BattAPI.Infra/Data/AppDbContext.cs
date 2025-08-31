@@ -21,6 +21,8 @@ namespace BattAPI.Infra.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().HasIndex(u => u.Name).IsUnique();
+
             modelBuilder.Entity<FileMeta>().UseTphMappingStrategy();
 
             modelBuilder.Entity<Product>().UseTptMappingStrategy()

@@ -1,5 +1,4 @@
 ﻿using BattAPI.App.Common.Users;
-using BattAPI.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -7,7 +6,7 @@ using System.Security.Claims;
 namespace BatteriesAPI.Controllers
 {
     [ApiController, Route("api/[controller]")]
-    public class AuthController(IAuthService authService, IUserRepository userRepo)
+    public class AuthController(IAuthService authService)
         : ControllerBase
     {
         [HttpGet("user-info"), Authorize]
@@ -24,10 +23,10 @@ namespace BatteriesAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(string username, string password)
         {
-            var token = authService.TryRegisterAsync(username, password);
+            var token = await authService.TryRegisterAsync(username, password);
 
             if (token == null)
-                return BadRequest("User already exists");
+                return Conflict("User already exists");
 
             return Ok(new { token });
         }

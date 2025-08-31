@@ -4,7 +4,7 @@
 
     public interface IAuthService
     {
-        Task<UserInfo> GetUserInfoAsync(Guid userId);
+        Task<UserInfo?> GetUserInfoAsync(Guid userId);
 
         Task<string?> TryRegisterAsync(string username, string password, string role = "user");
 

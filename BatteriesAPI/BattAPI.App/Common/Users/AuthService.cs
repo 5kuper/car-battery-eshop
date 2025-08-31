@@ -1,17 +1,19 @@
 ﻿using AutoMapper;
 using BattAPI.Domain.Entities;
 using BattAPI.Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace BattAPI.App.Common.Users
 {
     public class AuthService(AuthOptions opt, IUserRepository userRepo, IMapper mapper) : IAuthService
     {
-        public async Task<UserInfo> GetUserInfoAsync(Guid userId)
+        private readonly PasswordHasher<User> _hasher = new();
+
+        public async Task<UserInfo?> GetUserInfoAsync(Guid userId)
         {
             var user = await userRepo.GetAsync(userId);
             return mapper.Map<UserInfo>(user);
@@ -26,15 +28,13 @@ namespace BattAPI.App.Common.Users
 
         public async Task<string?> TryRegisterAsync(string username, string password, string role = "user")
         {
+            username = username.Trim().ToLowerInvariant();
+
             if (await userRepo.ExistsAsync(u => u.Name == username))
                 return null;
 
-            var user = new User
-            {
-                Name = username,
-                PasswordHash = Hash(password),
-                Role = role
-            };
+            var user = new User { Name = username, Role = role };
+            user.PasswordHash = _hasher.HashPassword(user, password);
 
             await userRepo.AddAsync(user);
             await userRepo.SaveChangesAsync();
@@ -44,10 +44,22 @@ namespace BattAPI.App.Common.Users
 
         public async Task<string?> TryLoginAsync(string username, string password)
         {
-            var user = await userRepo.GetAsync(u => u.Name == username);
+            username = username.Trim().ToLowerInvariant();
 
-            if (user == null || user.PasswordHash != Hash(password))
+            var user = await userRepo.GetAsync(u => u.Name == username);
+            if (user is null) return null;
+
+            var vr = _hasher.VerifyHashedPassword(user, user.PasswordHash, password);
+
+            if (vr == PasswordVerificationResult.SuccessRehashNeeded)
+            {
+                user.PasswordHash = _hasher.HashPassword(user, password);
+                await userRepo.SaveChangesAsync();
+            }
+            else if (vr == PasswordVerificationResult.Failed)
+            {
                 return null;
+            }
 
             return GenerateToken(user);
         }
@@ -71,12 +83,6 @@ namespace BattAPI.App.Common.Users
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private static string Hash(string value)
-        {
-            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(value));
-            return Convert.ToBase64String(bytes);
         }
     }
 }

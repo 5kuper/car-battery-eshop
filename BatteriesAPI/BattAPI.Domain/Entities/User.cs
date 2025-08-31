@@ -4,7 +4,7 @@
     {
         public required string Name { get; set; }
 
-        public required string PasswordHash { get; set; }
+        public string PasswordHash { get; set; } = null!;
 
         public required string Role { get; set; }
     }
