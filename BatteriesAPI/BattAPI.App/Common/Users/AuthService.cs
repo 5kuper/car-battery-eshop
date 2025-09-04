@@ -23,18 +23,18 @@ namespace BattAPI.App.Common.Users
         {
             var isAdminExist = await userRepo.ExistsAsync(u => u.Name == "admin");
             if (!isAdminExist)
-                await TryRegisterAsync("admin", opt.AdminPassword, "admin");
+                await TryRegisterAsync(new("admin", opt.AdminPassword), "admin");
         }
 
-        public async Task<string?> TryRegisterAsync(string username, string password, string role = "user")
+        public async Task<string?> TryRegisterAsync(UserCreds creds, string role = "user")
         {
-            username = username.Trim().ToLowerInvariant();
+            var username = creds.Username.Trim().ToLowerInvariant();
 
             if (await userRepo.ExistsAsync(u => u.Name == username))
                 return null;
 
             var user = new User { Name = username, Role = role };
-            user.PasswordHash = _hasher.HashPassword(user, password);
+            user.PasswordHash = _hasher.HashPassword(user, creds.Password);
 
             await userRepo.AddAsync(user);
             await userRepo.SaveChangesAsync();
@@ -42,18 +42,18 @@ namespace BattAPI.App.Common.Users
             return GenerateToken(user);
         }
 
-        public async Task<string?> TryLoginAsync(string username, string password)
+        public async Task<string?> TryLoginAsync(UserCreds creds)
         {
-            username = username.Trim().ToLowerInvariant();
+            var username = creds.Username.Trim().ToLowerInvariant();
 
             var user = await userRepo.GetAsync(u => u.Name == username);
             if (user is null) return null;
 
-            var vr = _hasher.VerifyHashedPassword(user, user.PasswordHash, password);
+            var vr = _hasher.VerifyHashedPassword(user, user.PasswordHash, creds.Password);
 
             if (vr == PasswordVerificationResult.SuccessRehashNeeded)
             {
-                user.PasswordHash = _hasher.HashPassword(user, password);
+                user.PasswordHash = _hasher.HashPassword(user, creds.Password);
                 await userRepo.SaveChangesAsync();
             }
             else if (vr == PasswordVerificationResult.Failed)

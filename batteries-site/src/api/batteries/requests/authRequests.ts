@@ -15,15 +15,11 @@ export const authRequests = {
     return result.data
   },
   login: async (data: LoginRequestData): Promise<Response<AuthResponseData>> => {
-    const result = await httpClient.post<Response<AuthResponseData>>('/api/Auth/login', null, {
-      params: data,
-    })
+    const result = await httpClient.post<Response<AuthResponseData>>('/api/Auth/login', data)
     return result.data
   },
   register: async (data: RegisterRequestData): Promise<Response<AuthResponseData>> => {
-    const result = await httpClient.post<Response<AuthResponseData>>('/api/Auth/register', null, {
-      params: data,
-    })
+    const result = await httpClient.post<Response<AuthResponseData>>('/api/Auth/register', data)
     return result.data
   },
 }

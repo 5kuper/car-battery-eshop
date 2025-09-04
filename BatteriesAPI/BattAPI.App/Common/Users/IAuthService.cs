@@ -6,9 +6,9 @@
     {
         Task<UserInfo?> GetUserInfoAsync(Guid userId);
 
-        Task<string?> TryRegisterAsync(string username, string password, string role = "user");
+        Task<string?> TryRegisterAsync(UserCreds creds, string role = "user");
 
-        Task<string?> TryLoginAsync(string username, string password);
+        Task<string?> TryLoginAsync(UserCreds creds);
 
         Task EnsureAdminRegisteredAsync();
     }

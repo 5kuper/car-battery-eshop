@@ -21,9 +21,9 @@ namespace BatteriesAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string username, string password)
+        public async Task<IActionResult> Register([FromBody] UserCreds creds)
         {
-            var token = await authService.TryRegisterAsync(username, password);
+            var token = await authService.TryRegisterAsync(creds);
 
             if (token == null)
                 return Conflict("User already exists");
@@ -32,9 +32,9 @@ namespace BatteriesAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login([FromBody] UserCreds creds)
         {
-            var token = await authService.TryLoginAsync(username, password);
+            var token = await authService.TryLoginAsync(creds);
 
             if (token == null)
                 return Unauthorized();

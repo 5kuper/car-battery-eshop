@@ -5,7 +5,7 @@ import type Product from '@/models/product'
 
 defineProps<{
   product: Product,
-  allowEditing: boolean
+  allowEditing?: boolean
 }>()
 
 const emit = defineEmits<{
