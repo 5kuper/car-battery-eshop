@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ModalBase from '@/components/ModalBase.vue'
+import ModalBase from '@/components/ModalSheet.vue'
 import JustInput from '@/components/common/JustInput.vue'
 import JustSelect from '@/components/common/JustSelect.vue'
 import JustImageInput from '../common/JustImageInput.vue'
@@ -57,6 +57,8 @@ const loading = ref(false)
 const error = ref<string | null>(null)
 
 const editing = computed(() => !!props.batteryId)
+
+const isSheet = ref(false)
 
 async function submit() {
   loading.value = true
@@ -119,7 +121,7 @@ function handleClosing() {
 </script>
 
 <template>
-  <ModalBase id="battery" @close="handleClosing">
+  <ModalBase id="battery" @close="handleClosing" @is-sheet="val => isSheet = val">
     <form @submit.prevent="submit" class="space-y-3">
       <h2 class="text-xl font-semibold">{{ editing ? 'Редактировать' : 'Добавить' }} АКБ</h2>
 
@@ -137,8 +139,13 @@ function handleClosing() {
               { value: StartPowerRating.DIN, label: 'DIN' }
             ]" />
           <JustInput v-model="form.price" type="number" label="Цена" />
+
+          <div v-if="isSheet" class="pt-1">
+            <JustImageInput v-model="imageFile" :default-preview-url="imageUrl" id="battery-form-image"
+              label="Выбрать изображение" />
+          </div>
         </div>
-        <div class="pt-1">
+        <div v-if="!isSheet" class="pt-1">
           <JustImageInput v-model="imageFile" :default-preview-url="imageUrl" id="battery-form-image"
             label="Выбрать изображение" />
         </div>

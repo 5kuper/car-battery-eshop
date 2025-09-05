@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ModalBase from '@/components/ModalBase.vue';
+import ModalBase from '@/components/ModalSheet.vue';
 
 import JustTabs from '../common/JustTabs.vue';
 import JustInput from '../common/JustInput.vue';
