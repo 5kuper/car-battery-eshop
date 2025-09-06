@@ -1,4 +1,5 @@
-﻿using BattAPI.App.Common.Users;
+﻿using BattAPI.App.Services.Common.Users;
+using BattAPI.App.Services.Common.Users.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -21,7 +22,7 @@ namespace BatteriesAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserCreds creds)
+        public async Task<IActionResult> Register([FromBody] RegistrationData creds)
         {
             var token = await authService.TryRegisterAsync(creds);
 

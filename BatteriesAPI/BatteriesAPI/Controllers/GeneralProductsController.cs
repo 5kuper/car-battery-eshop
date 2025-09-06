@@ -1,4 +1,4 @@
-﻿using BattAPI.App.Specific.Products;
+﻿using BattAPI.App.Services.Specific.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,8 +1,8 @@
 ﻿using BatteriesAPI.Controllers.Utils;
 using Microsoft.AspNetCore.Mvc;
-using BattAPI.App.Specific.Products.JustProducts;
-using BattAPI.App.Specific.Products.JustProducts.Models;
 using Microsoft.AspNetCore.Authorization;
+using BattAPI.App.Services.Specific.Products.JustProducts;
+using BattAPI.App.Services.Specific.Products.JustProducts.Models;
 
 namespace BatteriesAPI.Controllers
 {

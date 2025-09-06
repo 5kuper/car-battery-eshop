@@ -5,9 +5,12 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http.Features;
 using BatteriesAPI;
-using BattAPI.App.Common.Users;
 using BatteriesAPI.Extensions;
 using BatteriesAPI.Filters;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using BattAPI.App.Services.Common.Users;
+using BattAPI.App.Services.Specific.Notes.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,9 @@ var authOpt = builder.Configuration.GetSection(nameof(AuthOptions)).Get<AuthOpti
 builder.Services.AddScoped((_) => authOpt);
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
+
+builder.Services.AddFluentValidationAutoValidation()
+    .AddValidatorsFromAssemblyContaining<NoteInputValidator>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", opt =>

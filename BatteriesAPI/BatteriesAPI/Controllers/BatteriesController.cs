@@ -1,5 +1,5 @@
-﻿using BattAPI.App.Specific.Products.Batteries;
-using BattAPI.App.Specific.Products.Batteries.Models;
+﻿using BattAPI.App.Services.Specific.Products.Batteries;
+using BattAPI.App.Services.Specific.Products.Batteries.Models;
 using BatteriesAPI.Controllers.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

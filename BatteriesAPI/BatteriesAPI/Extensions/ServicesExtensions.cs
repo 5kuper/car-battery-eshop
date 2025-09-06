@@ -1,9 +1,9 @@
-﻿using BattAPI.App.Common.Files;
-using BattAPI.App.Common.Users;
-using BattAPI.App.Specific.Notes;
-using BattAPI.App.Specific.Products;
-using BattAPI.App.Specific.Products.Batteries;
-using BattAPI.App.Specific.Products.JustProducts;
+﻿using BattAPI.App.Services.Common.Files;
+using BattAPI.App.Services.Common.Users;
+using BattAPI.App.Services.Specific.Notes;
+using BattAPI.App.Services.Specific.Products;
+using BattAPI.App.Services.Specific.Products.Batteries;
+using BattAPI.App.Services.Specific.Products.JustProducts;
 using BattAPI.Domain.Entities.Files;
 using BattAPI.Domain.Repositories;
 using BattAPI.Infra.Data.Repositories;
