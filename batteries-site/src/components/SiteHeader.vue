@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
-
-const cartCount = computed(() => 5)
 
 function openAuth() {
   router.push({ query: { modal: 'auth' } })
@@ -14,34 +11,29 @@ function openAuth() {
 <template>
   <header class="site-header">
     <div class="header-container">
-      <RouterLink to="/" class="mr-5">
-        <img class="h-[35px] block" src="../assets/logo.svg" alt="Логотип" />
+      <RouterLink to="/" class="logo flex items-center mr-5">
+        <span class="logo-icon" aria-hidden="true"></span>
+        <h1 class="text-3xl">Флагман</h1>
       </RouterLink>
 
-      <!-- <nav class="main-nav">
+      <nav class="main-nav mt-2">
         <ul>
           <li>
-            <RouterLink to="/products">Товары</RouterLink>
+            <RouterLink to="/catalog">Каталог</RouterLink>
           </li>
           <li>
-            <RouterLink to="/contact">Контакты</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/reviews">Отзывы</RouterLink>
+            <RouterLink to="/contacts">Контакты</RouterLink>
           </li>
         </ul>
-      </nav> -->
+      </nav>
 
       <div class="flex flex-row space-x-5 ml-auto">
         <!-- <RouterLink to="/cart" class="icon-btn">
           <span class="material-symbols-outlined"> shopping_cart </span>
           <span class="cart-count">{{ cartCount }}</span>
         </RouterLink> -->
-        <div class="icon-btn">
-          <span @click="openAuth" @keydown.enter="openAuth" class="material-symbols-outlined cursor-pointer"
-            tabindex="0" role="button">
-            account_circle
-          </span>
+        <div class="icon-btn" @click="openAuth" @keydown.enter="openAuth" tabindex="0" role="button">
+          <span class="material-symbols-outlined cursor-pointer">account_circle</span>
         </div>
       </div>
     </div>
@@ -52,9 +44,11 @@ function openAuth() {
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 .site-header {
+  --hover-color: #FF7518;
+
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -67,6 +61,25 @@ function openAuth() {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+.logo {
+  color: #333;
+  transition: color .2s ease-in-out;
+}
+
+.logo:hover,
+.logo:focus {
+  color: var(--hover-color);
+}
+
+.logo-icon {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask: url('../assets/logo.svg') no-repeat center / contain;
+  mask: url('../assets/logo.svg') no-repeat center / contain;
 }
 
 .main-nav ul {
@@ -86,8 +99,9 @@ function openAuth() {
   transition: color 0.2s ease-in-out;
 }
 
-.main-nav a:hover {
-  color: #007bff;
+.main-nav a:hover,
+.main-nav a:focus {
+  color: var(--hover-color);
 }
 
 .material-symbols-outlined {
@@ -108,8 +122,9 @@ function openAuth() {
   align-items: center;
 }
 
-.icon-btn:hover {
-  color: #007bff;
+.icon-btn:hover,
+.icon-btn:focus {
+  color: var(--hover-color);
 }
 
 .cart-count {
