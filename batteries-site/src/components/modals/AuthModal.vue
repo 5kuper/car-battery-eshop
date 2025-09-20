@@ -34,7 +34,7 @@ async function login() {
 }
 
 async function register() {
-  await authStore.register(loginForm.username, loginForm.password)
+  await authStore.register(registerForm.username, registerForm.password)
 }
 
 function logout() {

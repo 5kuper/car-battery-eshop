@@ -69,7 +69,7 @@ function openAuth() {
 }
 
 .logo:hover,
-.logo:focus {
+.logo:focus-visible {
   color: var(--hover-color);
 }
 
@@ -100,7 +100,7 @@ function openAuth() {
 }
 
 .main-nav a:hover,
-.main-nav a:focus {
+.main-nav a:focus-visible {
   color: var(--hover-color);
 }
 
@@ -123,7 +123,7 @@ function openAuth() {
 }
 
 .icon-btn:hover,
-.icon-btn:focus {
+.icon-btn:focus-visible {
   color: var(--hover-color);
 }
 
